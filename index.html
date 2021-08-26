@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Crazy Panda Slider</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script>
+        let value = null;
+
+        $(function () {
+            $("input[type=button], a, button")
+                .button()
+                .click(function (event) {
+                    console.log(event.target.value);
+                    value = event.target.value;
+                });
+        });
+
+        function hexFromRGB(r, g, b) {
+            var hex = [
+                r.toString(16),
+                g.toString(16),
+                b.toString(16)
+            ];
+            $.each(hex, function (nr, val) {
+                if (val.length === 1) {
+                    hex[nr] = "0" + val;
+                }
+            });
+            return hex.join("").toUpperCase();
+        }
+
+        function refreshSwatch() {
+            var red = $("#red").slider("value"),
+                green = $("#green").slider("value"),
+                blue = $("#blue").slider("value"),
+                hex = hexFromRGB(red, green, blue);
+            if (value === `Color`) {
+                $("#swatch").css('color', "#" + hex);
+            } else {
+                $("#swatch").css('background-color', "#" + hex);
+            }
+        }
+
+        $(function () {
+            $("#red, #green, #blue").slider({
+                orientation: "horizontal",
+                range: "min",
+                max: 255,
+                value: 127,
+                slide: refreshSwatch,
+                change: refreshSwatch
+            });
+            $("#red").slider("value", 140);
+            $("#green").slider("value", 140);
+            $("#blue").slider("value", 60);
+        });
+    </script>
+</head>
+<body>
+
+<form>
+    <fieldset>
+        <legend>Select:</legend>
+        <input type="button" id="color" value="Color"/>
+        <input type="button" id="background" value="Background"/>
+    </fieldset>
+</form>
+
+<div class="bottom-block__wrapper">
+    <div id="eq">
+        <div id="red"></div>
+        <div id="green"></div>
+        <div id="blue"></div>
+    </div>
+    <div class="bottom-block__item">
+        <textarea readonly id="swatch">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry’s standard dummy.</textarea>
+    </div>
+</div>
+
+
+</body>
+</html>
